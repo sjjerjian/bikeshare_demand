@@ -1,0 +1,7 @@
+/old
+/data
+/figs
+/darts_logs
+/model_artefacts/old
+*-checkpoint.ipynb
+*-checkpoint*
