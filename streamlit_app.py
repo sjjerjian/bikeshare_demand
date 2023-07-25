@@ -39,8 +39,8 @@ cluster_df['size'] = 15
 cluster_df = pd.concat([cluster_df, station_locs])
 
 
-#Caching the model for faster loading
-@st.cache_data
+#Caching the models for faster loading
+@st.cache_data(ttl=3600, show_spinner="Fetching models from S3...")
 
 def add_time_features(dt_series):
     """create exogenous time-related features"""
@@ -116,6 +116,8 @@ clus_for_pred = st.multiselect(
 
 if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
+    @st.cache_data(ttl=3600, show_spinner="Fetching cached predictions..."
+
     st.write("selected clusters for prediction: ", clus_for_pred)
     st.write('made prediction')
     pred_df = prediction.pd_dataframe()
