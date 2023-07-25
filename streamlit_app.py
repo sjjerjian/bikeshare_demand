@@ -14,7 +14,7 @@ import pickle
 st.cache_data.clear()
 
 #Caching the models for faster loading
-@st.cache_data(ttl=3600, show_spinner="Fetching models from S3...")
+@st.cache_data
 
 s3_bucket = 'cabi-model-artefacts'
 
