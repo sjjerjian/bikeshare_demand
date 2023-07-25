@@ -35,7 +35,7 @@ cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", 
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
 cluster_labels = range(0, len(cluster_df))
 cluster_df['color'] = '#ff0000'
-cluster_df['size'] = 8
+cluster_df['size'] = 15
 cluster_df = pd.concat([cluster_df, station_locs])
 
 
@@ -110,9 +110,10 @@ clus_for_pred = st.multiselect(
                     options=cluster_labels,
                 )
 clus_for_pred = [f'clus{c}' for c in clus_for_pred]
+st.write("selected clusters for prediction")
 
 if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
     pred_df = prediction.pd_dataframe()
 
-    st.line_chart(pred_df[clus_for_pred])
+    st.line_chart(pred_df, y=clus_for_pred)
