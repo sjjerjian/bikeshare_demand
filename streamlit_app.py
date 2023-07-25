@@ -11,14 +11,12 @@ from darts.models import XGBModel
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import pickle
 
-st.cache_data.clear()
-
 #Caching the models for faster loading
-@st.cache_data
 
 s3_bucket = 'cabi-model-artefacts'
 
 # Function to read the pickled model from S3
+@st.cache_data
 def load_model_from_s3(bucket, file_name):
     s3 = boto3.resource('s3')
     obj = s3.Object(bucket, file_name)
@@ -74,6 +72,7 @@ def add_time_features(dt_series):
 
     return dt_series
 
+#@st.cache_data
 def predict(steps, exog):
     return model.predict(
         series=model.training_series,
