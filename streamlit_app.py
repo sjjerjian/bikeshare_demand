@@ -9,7 +9,6 @@ from darts import TimeSeries
 from darts.models import XGBModel
 
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
-import joblib
 import pickle
 
 
@@ -25,11 +24,7 @@ def load_model_from_s3(bucket, file_name):
 # Load the model from S3
 model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
 station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
-
-s3 = boto3.resource('s3')
-obj = s3.Object(s3_bucket, "km_clusters_busystations.joblib")
-model_bytes = obj.get()['Body'].read()
-cluster_model = joblib.loads(model_bytes)
+cluster_model = load_model_from_s3(s3_bucket, "km_clusters.pkl")
 
 station_locs.rename(columns={'lng':'lon'}, inplace=True)
 station_locs = station_locs[["lat", "lon"]]
