@@ -109,11 +109,11 @@ clus_for_pred = st.multiselect(
                     "Select clusters for prediction:",
                     options=cluster_labels,
                 )
-clus_for_pred = [f'clus{c}' for c in clus_for_pred]
-#st.write("selected clusters for prediction")
 
 if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
     #pred_df = prediction.pd_dataframe()
     st.write('made prediction')
+    clus_for_pred = [f'clus{c}' for c in clus_for_pred]
+    st.write("selected clusters for prediction")
     #st.line_chart(pred_df, y=clus_for_pred)
