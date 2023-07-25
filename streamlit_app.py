@@ -1,4 +1,5 @@
 import streamlit as st
+import boto3
 
 import datetime
 import numpy as np
@@ -10,6 +11,7 @@ from darts.models import XGBModel
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import joblib
 import pickle
+
 
 s3_bucket = 'cabi-model-artefacts'
 

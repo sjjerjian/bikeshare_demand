@@ -3,5 +3,6 @@ numpy
 pandas
 darts
 s3fs
+boto3
 git+https://github.com/streamlit/files-connection
 cloudpickle
