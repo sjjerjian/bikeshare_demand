@@ -33,7 +33,7 @@ station_locs['size'] = 1
 
 cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", "start_lng"])
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
-#cluster_df['cluster_label'] = range(0, len(cluster_df))
+cluster_labels = range(0, len(cluster_df))
 cluster_df['color'] = '#ff0000'
 cluster_df['size'] = 2
 cluster_df = pd.concat([cluster_df, station_locs])
@@ -96,7 +96,7 @@ date_range = st.date_input("Select date range for prediction:",
 datetime_range = pd.date_range(start=date_range[0], end=date_range[1], freq='H')
 dt_series = pd.Series(index=datetime_range)
 
-train_end = model.training_range[1].date()
+train_end = model.training_series.time_index[-1].date()
 
 start_pred = ((date_range[0] - train_end).days - 1) * 24 
 end_pred = ((date_range[1] - train_end).days - 1)  * 24
