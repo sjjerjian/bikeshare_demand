@@ -21,7 +21,7 @@ def load_model_from_s3(bucket, file_name):
     s3 = boto3.resource('s3')
     obj = s3.Object(bucket, file_name)
 
-    if file_name.contains('gz'):
+    if file_name.endswith('gz'):
         with gzip.GzipFile(fileobj=response['Body']) as f:
             model_bytes = f.read()
     else:
