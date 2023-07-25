@@ -19,17 +19,16 @@ s3_bucket = 'cabi-model-artefacts'
 # Function to read the pickled model from S3
 @st.cache_data
 def load_model_from_s3(bucket, file_name):
-    s3 = boto3.resource('s3')
-    obj = s3.Object(bucket, file_name)
-    
+
     if file_name.endswith('gz'):
-        #response = s3.get_object(Bucket=bucket, Key=file_name)
-        #with gzip.GzipFile(fileobj=response['Body']) as f:
-        #    model_bytes = f.read()
-        with gzip.GzipFile(obj.get()['Body']) as f:
+        s3 = boto3.client('s3')
+        response = s3.get_object(Bucket=bucket, Key=file_name)
+        with gzip.GzipFile(fileobj=response['Body']) as f:
             model_bytes = f.read()
-        
+
     else:
+        s3 = boto3.resource('s3')
+        obj = s3.Object(bucket, file_name)
         model_bytes = obj.get()['Body'].read()
 
     return pickle.loads(model_bytes)
