@@ -33,10 +33,11 @@ station_locs['size'] = 1
 
 cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", "start_lng"])
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
-cluster_df['cluster_label'] = range(0, len(cluster_df))
+#cluster_df['cluster_label'] = range(0, len(cluster_df))
 cluster_df['color'] = 'r'
 cluster_df['size'] = 2
 cluster_df = pd.concat([cluster_df, station_locs])
+
 
 #Caching the model for faster loading
 @st.cache
@@ -80,11 +81,11 @@ def predict(steps, exog):
 
 st.title('Bikeshare Demand Prediction')
 st.map(cluster_df,
-    latitude='lat',
-    longitude='lon',
-    size='size',
-    color='color',
-)
+       latitude='lat',
+       longitude='lon',
+       size='size',
+       color='color',
+      )
 
 date_range = st.date_input("Select date range for prediction:",
                            value= (datetime.date(2023, 7, 1), datetime.date(2023,7, 8)),
