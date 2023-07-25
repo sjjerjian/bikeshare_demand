@@ -20,15 +20,23 @@ s3_bucket = 'cabi-model-artefacts'
 def load_model_from_s3(bucket, file_name):
     s3 = boto3.resource('s3')
     obj = s3.Object(bucket, file_name)
-    model_bytes = obj.get()['Body'].read()
+
+    if file_name.contains('gz'):
+        with gzip.GzipFile(fileobj=response['Body']) as f:
+            model_bytes = f.read()
+    else:
+        model_bytes = obj.get()['Body'].read()
+
     return pickle.loads(model_bytes)
 
+
+
 # Load the model from S3
-model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
-st.write('Model loaded')
-#model = load_model_from_s3(s3_bucket, "darts_xgb_gzip.gz")
+#model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
+model = load_model_from_s3(s3_bucket, "darts_xgb_gzip.gz")
 #station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
 cluster_model = load_model_from_s3(s3_bucket, "km_clusters.pkl")
+st.write('Models loaded')
 
 #station_locs.rename(columns={'lng':'lon'}, inplace=True)
 #station_locs = station_locs[["lat", "lon"]]
