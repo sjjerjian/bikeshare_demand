@@ -4,6 +4,4 @@ pandas
 darts
 s3fs
 git+https://github.com/streamlit/files-connection
-pickle
 cloudpickle
-joblibs
