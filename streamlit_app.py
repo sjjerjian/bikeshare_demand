@@ -8,8 +8,8 @@ from darts import TimeSeries
 from darts.models import XGBModel
 
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
-from cloudpickle import load as pkl_load
-from joblib import load as jb_load
+import joblib
+import pickle
 
 s3_bucket = 'cabi-model-artefacts'
 
