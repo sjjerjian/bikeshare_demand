@@ -22,8 +22,8 @@ def load_model_from_s3(bucket, file_name):
     return pickle.loads(model_bytes)
 
 # Load the model from S3
-#model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
-model = load_model_from_s3(s3_bucket, "darts_xgb_gzip.gz")
+model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
+#model = load_model_from_s3(s3_bucket, "darts_xgb_gzip.gz")
 station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
 cluster_model = load_model_from_s3(s3_bucket, "km_clusters.pkl")
 
