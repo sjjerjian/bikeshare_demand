@@ -106,16 +106,17 @@ dt_df = dt_df[['month', 'season', 'hour', 'is_workday', 'is_holiday', 'rush_hour
 
 st.write(dt_df.head())
 
-clus_for_pred = [0]
+clus_str = [f'clus{c}' for c in cluster_labels]
+
 clus_for_pred = st.multiselect(
                     "Select clusters for prediction:",
-                    options=cluster_labels,
+                    options=clus_str,
+                    default='clus0'
                 )
 
 if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
-    #pred_df = prediction.pd_dataframe()
+    st.write("selected clusters for prediction: ", clus_for_pred)
     st.write('made prediction')
-    clus_for_pred = [f'clus{c}' for c in clus_for_pred]
-    st.write("selected clusters for prediction")
+    pred_df = prediction.pd_dataframe()
     st.line_chart(pred_df, y=clus_for_pred)
