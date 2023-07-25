@@ -10,6 +10,7 @@ from darts.models import XGBModel
 
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import pickle
+import gzip
 
 #Caching the models for faster loading
 
