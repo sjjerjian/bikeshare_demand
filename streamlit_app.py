@@ -25,21 +25,22 @@ def load_model_from_s3(bucket, file_name):
 
 # Load the model from S3
 model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
+st.write('Model loaded')
 #model = load_model_from_s3(s3_bucket, "darts_xgb_gzip.gz")
-station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
+#station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
 cluster_model = load_model_from_s3(s3_bucket, "km_clusters.pkl")
 
-station_locs.rename(columns={'lng':'lon'}, inplace=True)
-station_locs = station_locs[["lat", "lon"]]
-station_locs['color'] = '#000000'
-station_locs['size'] = 1
+#station_locs.rename(columns={'lng':'lon'}, inplace=True)
+#station_locs = station_locs[["lat", "lon"]]
+# station_locs['color'] = '#000000'
+# station_locs['size'] = 1
 
 cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", "start_lng"])
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
 cluster_labels = range(0, len(cluster_df))
 cluster_df['color'] = '#ff0000'
-cluster_df['size'] = 15
-cluster_df = pd.concat([cluster_df, station_locs])
+cluster_df['size'] = 12
+# cluster_df = pd.concat([cluster_df, station_locs])
 
 
 def add_time_features(dt_series):
@@ -72,7 +73,7 @@ def add_time_features(dt_series):
 
     return dt_series
 
-#@st.cache_data
+
 def predict(steps, exog):
     return model.predict(
         series=model.training_series,
@@ -81,12 +82,12 @@ def predict(steps, exog):
     )
 
 st.title('Bikeshare Demand Prediction')
-# st.map(cluster_df,
-#        latitude='lat',
-#        longitude='lon',
-#        size='size',
-#        color='color',
-#       )
+st.map(cluster_df,
+        latitude='lat',
+        longitude='lon',
+        size='size',
+        color='color',
+       )
 
 date_range = st.date_input("Select date range for prediction:",
                            value= (datetime.date(2023, 7, 1), datetime.date(2023,7, 8)),
