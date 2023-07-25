@@ -26,6 +26,7 @@ def load_model_from_s3(bucket, file_name):
 model = load_model_from_s3(s3_bucket, "darts_xgb_clus_alldata_final.pkl")
 station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
 
+s3 = boto3.resource('s3')
 obj = s3.Object(bucket, "km_clusters_busystations.joblib")
 model_bytes = obj.get()['Body'].read()
 cluster_model = joblib.loads(model_bytes)
