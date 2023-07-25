@@ -35,7 +35,7 @@ cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", 
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
 cluster_labels = range(0, len(cluster_df))
 cluster_df['color'] = '#ff0000'
-cluster_df['size'] = 2
+cluster_df['size'] = 8
 cluster_df = pd.concat([cluster_df, station_locs])
 
 
@@ -65,10 +65,10 @@ def add_time_features(dt_series):
     dt_series['is_workday'] = ~(dt_series['weekend'] | dt_series['is_holiday'])
     dt_series['rush_hour'] = ((dt_series['hour'] > 5) & (dt_series['hour'] < 9)) | ((dt_series['hour'] > 16) & (dt_series['hour'] < 20))
     
-    dt_series[['year', 'day_of_week', 'weekend']] = exog[['year', 'day_of_week', 'weekend']].astype("category")
-    exog['rush_hour'] = ((exog['hour'] >= 5) & (exog['hour'] < 10)) | ((exog['hour'] >= 15) & (exog['hour'] < 20))
-    #exog['condition'].replace({'rainy':0, 'cloudy':1, 'clear':2}, inplace=True)
-    exog['season'].replace({'Winter':0, 'Autumn':1, 'Spring':1, 'Summer':2}, inplace=True)
+    dt_series[['year', 'day_of_week', 'weekend']] = dt_series[['year', 'day_of_week', 'weekend']].astype("category")
+    dt_series['rush_hour'] = ((dt_series['hour'] >= 6) & (dt_series['hour'] < 10)) | ((dt_series['hour'] >= 16) & (dt_series['hour'] < 20))
+    #dt_series['condition'].replace({'rainy':0, 'cloudy':1, 'clear':2}, inplace=True)
+    dt_series['season'].replace({'Winter':0, 'Autumn':1, 'Spring':1, 'Summer':2}, inplace=True)
 
     return dt_series
 
@@ -115,3 +115,6 @@ if st.button('Predict'):
 
     st.line_chart(pred_df['clus0'])
     st.line_chart(pred_df['clus1'])
+
+    for clus in clus_for_pred:
+        st.write(f'clus{clus}')
