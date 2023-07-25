@@ -11,6 +11,10 @@ from darts.models import XGBModel
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import pickle
 
+st.cache_data.clear()
+
+#Caching the models for faster loading
+@st.cache_data(ttl=3600, show_spinner="Fetching models from S3...")
 
 s3_bucket = 'cabi-model-artefacts'
 
@@ -39,9 +43,6 @@ cluster_df['color'] = '#ff0000'
 cluster_df['size'] = 15
 cluster_df = pd.concat([cluster_df, station_locs])
 
-
-#Caching the models for faster loading
-@st.cache_data(ttl=3600, show_spinner="Fetching models from S3...")
 
 def add_time_features(dt_series):
     """create exogenous time-related features"""
@@ -81,12 +82,12 @@ def predict(steps, exog):
     )
 
 st.title('Bikeshare Demand Prediction')
-st.map(cluster_df,
-       latitude='lat',
-       longitude='lon',
-       size='size',
-       color='color',
-      )
+# st.map(cluster_df,
+#        latitude='lat',
+#        longitude='lon',
+#        size='size',
+#        color='color',
+#       )
 
 date_range = st.date_input("Select date range for prediction:",
                            value= (datetime.date(2023, 7, 1), datetime.date(2023,7, 8)),
@@ -117,6 +118,6 @@ if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
 
     #st.write("selected clusters for prediction: ", clus_for_pred)
-    st.write('made prediction')
+    st.write('Made prediction')
     pred_df = prediction.pd_dataframe()
     st.line_chart(pred_df, y=clus_for_pred)
