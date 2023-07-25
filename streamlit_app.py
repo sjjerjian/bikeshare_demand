@@ -1,32 +1,37 @@
 import streamlit as st
+
 import datetime
 import numpy as np
 import pandas as pd
-from skforecast.ForecasterAutoreg import ForecasterAutoreg
-import xgboost
-import lightgbm
 
 from darts import TimeSeries
 from darts.models import XGBModel
-
-#import matplotlib.pyplot as plt
 
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 from cloudpickle import load as pkl_load
 from joblib import load as jb_load
 
-with open('model_artefacts/dart_xgb_clus_alldata_lfs.pkl', 'rb') as pkl_file:
-    model = pkl_load(pkl_file)
-with open('data/ride_locations.pkl', 'rb') as pkl_file:
-    station_locs = pkl_load(pkl_file)
+s3_bucket = 'cabi-model-artefacts'
+
+# Function to read the pickled model from S3
+def load_model_from_s3(bucket, file_name):
+    s3 = boto3.resource('s3')
+    obj = s3.Object(bucket, file_name)
+    model_bytes = obj.get()['Body'].read()
+    return pickle.loads(model_bytes)
+
+# Load the model from S3
+model = load_model_from_s3(s3_bucket, "dart_xgb_clus_alldata_final.pkl")
+station_locs = load_model_from_s3(s3_bucket, "ride_locations.pkl")
+
+obj = s3.Object(bucket, "km_clusters_busystations.joblib")
+model_bytes = obj.get()['Body'].read()
+cluster_model = joblib.loads(model_bytes)
     
 station_locs.rename(columns={'lng':'lon'}, inplace=True)
 station_locs = station_locs[["lat", "lon"]]
 station_locs['color'] = 'k'
 station_locs['size'] = 1
-
-with open('model_artefacts/km_clusters_busystations.joblib', 'rb') as cluster_file:
-    cluster_model = jb_load(cluster_file)
 
 cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["lat", "lon"])
 cluster_labels =  cluster_df.index()
