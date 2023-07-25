@@ -28,13 +28,13 @@ cluster_model = load_model_from_s3(s3_bucket, "km_clusters.pkl")
 
 station_locs.rename(columns={'lng':'lon'}, inplace=True)
 station_locs = station_locs[["lat", "lon"]]
-station_locs['color'] = 'k'
+station_locs['color'] = '#000000'
 station_locs['size'] = 1
 
 cluster_df = pd.DataFrame(cluster_model.cluster_centers_, columns=["start_lat", "start_lng"])
 cluster_df.rename(columns={'start_lng':'lon', 'start_lat':'lat'}, inplace=True)
 #cluster_df['cluster_label'] = range(0, len(cluster_df))
-cluster_df['color'] = 'r'
+cluster_df['color'] = '#ff0000'
 cluster_df['size'] = 2
 cluster_df = pd.concat([cluster_df, station_locs])
 
