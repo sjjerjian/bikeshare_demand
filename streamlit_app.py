@@ -104,6 +104,8 @@ end_pred = ((date_range[1] - train_end).days - 1)  * 24
 dt_df = add_time_features(dt_series)
 dt_df = dt_df[['month', 'season', 'hour', 'is_workday', 'is_holiday', 'rush_hour']]
 
+st.write(dt_df.head())
+
 clus_for_pred = [0]
 clus_for_pred = st.multiselect(
                     "Select clusters for prediction:",
@@ -116,4 +118,4 @@ if st.button('Predict'):
     st.write('made prediction')
     clus_for_pred = [f'clus{c}' for c in clus_for_pred]
     st.write("selected clusters for prediction")
-    #st.line_chart(pred_df, y=clus_for_pred)
+    st.line_chart(pred_df, y=clus_for_pred)
