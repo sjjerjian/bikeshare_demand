@@ -117,7 +117,7 @@ clus_for_pred = st.multiselect(
 
 if st.button('Predict'):
     prediction = predict(steps=end_pred, exog=dt_df)
-    @st.cache_data(ttl=3600, show_spinner="Fetching cached predictions..."
+    @st.cache_data(ttl=3600, show_spinner="Fetching cached predictions...")
 
     st.write("selected clusters for prediction: ", clus_for_pred)
     st.write('made prediction')
