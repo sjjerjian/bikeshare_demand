@@ -40,7 +40,7 @@ cluster_df = pd.concat([cluster_df, station_locs])
 
 
 #Caching the model for faster loading
-@st.cache
+@st.cache_data
 
 def add_time_features(dt_series):
     """create exogenous time-related features"""
