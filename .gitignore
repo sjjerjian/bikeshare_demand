@@ -5,3 +5,4 @@
 /model_artefacts/old
 *-checkpoint.ipynb
 *-checkpoint*
+*.pkl
